@@ -1,9 +1,9 @@
 export default async function handler(req, res) {
   const apiKey = process.env.GOOGLE_API_KEY;
-  const placeId = process.env.PLACE_ID; // ← Now pulled from env instead of hardcoded
+  const placeId = process.env.PLACE_ID;
 
   const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=name,rating,reviews&key=${apiKey}`;
-
+  
   const response = await fetch(url);
   const data = await response.json();
 
@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "Unable to fetch reviews." });
   }
 
-  const reviews = data.result.reviews.map((review, idx) => `
+  const reviews = data.result.reviews.map((review) => `
     <div class="review" style="flex: 0 0 33.333%; box-sizing: border-box; padding: 10px;">
       <div style="background: #fff; border: 1px solid #ccc; padding: 15px; border-radius: 8px; height: 100%;">
         <strong>${review.author_name}</strong> (${review.rating}⭐)
